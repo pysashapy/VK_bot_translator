@@ -13,3 +13,5 @@ class Vk(object):
 
         if self.token_vk == "": print("[INFO]  Error 1: "+er["1"])
         if self.token_ya == "": print("[INFO]  Error 2: "+er["2"])
+if __name__ == '__main__':
+    print("Запустите  start.py ")
