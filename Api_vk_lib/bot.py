@@ -2,6 +2,7 @@ import requests
 import vk_api #pip3 install vk_api for python3 or pip install vk_api for python2
 from vk_api.longpoll import VkLongPoll, VkEventType
 from sating import *
+from audio.voice import Say
 from .functions import *
 from .errors import er
 
@@ -36,10 +37,16 @@ class Vk_bot(object):
             if event.type == VkEventType.MESSAGE_NEW:
                 if event.to_me:
                     request = (event.text).split()
+                    print(request[0].lower()=="audio",)
                     if request[0].lower() in lang:
                         write_msg(self.vk,event.user_id, str(self.translate(" ".join(request[1:]),request[0].lower())))
                     elif request[0].lower() == "help" and len(request) == 1:
                         write_msg(self.vk,event.user_id, lang_help)
+                    elif request[0].lower() == "audio" and request[1].lower() in lang:
+                        text = self.translate(" ".join(request[2:]),request[1].lower())
+                        audio_dc = Say(self.vk,event.peer_id, text)
+                        write_msg(self.vk,event.user_id, text, audio_dc.__str__())
+
                     else:
                         write_msg(self.vk,event.user_id, str(self.translate(" ".join(request[0:]),"en")))
 
