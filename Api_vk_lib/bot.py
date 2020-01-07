@@ -1,5 +1,6 @@
 import requests
 import vk_api #pip3 install vk_api for python3 or pip install vk_api for python2
+import threading
 from vk_api.longpoll import VkLongPoll, VkEventType
 from sating import *
 from audio.voice import Say
@@ -43,14 +44,15 @@ class Vk_bot(object):
                     elif request[0].lower() == "help" and len(request) == 1:
                         write_msg(self.vk,event.user_id, lang_help)
                     elif request[0].lower() == "audio" and request[1].lower() in lang:
-                        text = self.translate(" ".join(request[2:]),request[1].lower())
-                        audio_dc = Say(self.vk,event.peer_id, text)
-                        write_msg(self.vk,event.user_id, text, audio_dc.__str__())
+                        threading.Thread(target=self.logick, args=(self.vk,event, request,)).start()
 
                     else:
                         write_msg(self.vk,event.user_id, str(self.translate(" ".join(request[0:]),"en")))
 
-
+    def logick(self,vk,event,request):
+        text = self.translate(" ".join(request[2:]),request[1].lower())
+        audio_dc = Say(vk,event.peer_id, text,request[1].lower())
+        write_msg(vk,event.user_id, text, audio_dc.__str__())
     def translate(self, text, language="en"):
 
         params = {

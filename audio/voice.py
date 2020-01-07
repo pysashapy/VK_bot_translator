@@ -1,23 +1,23 @@
-from gtts import gTTS
 import time
 import requests
 import os
 import json
-
+import random
+from gtts import gTTS
 
 
 class Say(object):
     """docstring for Say."""
 
-    def __init__(self,vk=None,id=None,text=None):
+    def __init__(self,vk,id,text,lang):
         self.text = text
         self.vk = vk
         self.id = id
-
+        self.lang = lang
     def __str__(self):
         url =self.vk.method('docs.getMessagesUploadServer', {'type': 'audio_message', "peer_id": self.id})['upload_url']  # получаем ссылку для загрузки файла
-        tts = gTTS(text=self.text)
-        name = str(int(time.time())) + ".mp3"
+        tts = gTTS(text=self.text, lang=self.lang)
+        name = str(int(time.time()))+str(random.randint(0,999999)) + ".mp3"
         tts.save(name)
         file = open(name, 'rb')
         files = [('file', (name, file))]
