@@ -7,4 +7,7 @@ def logo(fail):
 
 if __name__ == '__main__':
     logo("logo")
-    bot.Vk_bot()
+    try:
+        bot.Vk_bot()
+    except Exception as e:
+        bot.Vk_bot()
