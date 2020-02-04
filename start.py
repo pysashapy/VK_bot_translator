@@ -9,5 +9,5 @@ if __name__ == '__main__':
     logo("logo")
     try:
         bot.Vk_bot()
-    except Exception as e:
+    except BaseException as e:
         bot.Vk_bot()
